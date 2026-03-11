@@ -82,6 +82,9 @@ for i, node in enumerate(response.source_nodes):
     
     print(f"\n--- 参考 {i+1} ---")
     
+    # 検索スコア
+    print("類似度スコア:", node.score)
+    
     # 元のファイル名
     source = node.node.metadata.get("file_name", "不明")
     
