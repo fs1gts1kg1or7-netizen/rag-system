@@ -1,0 +1,7 @@
+llama-index==0.10.30
+llama-index-llms-openai
+llama-index-embeddings-openai
+openai==1.30.0
+python-dotenv
+tiktoken
+nltk
