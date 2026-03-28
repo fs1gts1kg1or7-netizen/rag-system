@@ -112,7 +112,6 @@ else:
 # ==============================
 
 print("\n===== 参考情報（検索されたチャンク） =====")
-print("取得チャンク数:", len(response.source_nodes))
 
 for i, node in enumerate(response.source_nodes):
 
@@ -125,6 +124,8 @@ for i, node in enumerate(response.source_nodes):
     source = node.node.metadata.get("file_name", "不明")
     print("出典ファイル:", source)
 
-    # 本文
+    # 改行だけ消す（これが重要）
+    text = node.node.text.replace("\n", " ")
+
     print("関連文章:")
-    print(node.node.text[:300])
+    print(text[:200]) 
