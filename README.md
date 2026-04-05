@@ -21,6 +21,7 @@
 ## ■ デモ画面
 
 ![デモ画像](images/rag-demo.png)
+![デモ画像](images/rag-demo-error.png)
 
 ---
 
