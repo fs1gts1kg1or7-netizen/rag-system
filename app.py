@@ -42,7 +42,7 @@ if question:
             required_exts = [".txt"],  # .txtファイルのみ
         ).load_data()
 
-        print("読み込んだドキュメント数:", len(documents))
+        st.write("読み込んだドキュメント数:", len(documents))
 
         # ==============================
         # ③ チャンク分割
@@ -55,7 +55,7 @@ if question:
 
         nodes = parser.get_nodes_from_documents(documents)
 
-        print("作成されたチャンク数:", len(nodes))
+        st.write("作成されたチャンク数:", len(nodes))
 
         # ==============================
         # ④ ベクトルインデックス作成
@@ -75,11 +75,6 @@ if question:
             llm=llm
         )
 
-        # ==============================
-        # ⑥ 質問
-        # ==============================
-
-        question = input("\n質問を入力してください: ")
 
         # ==============================
         # ⑧ 検索
@@ -91,12 +86,8 @@ if question:
         # ⑦ 回答表示
         # ==============================
 
-        print("\n===== 質問 =====")
-        print(question)
-
-
         # ==============================
-        # ⑨ 「答えられない」判定（重要）
+        # ⑨ 「答えられない」判定
         # ==============================
 
         # スコアが低い場合は回答しない
@@ -108,36 +99,36 @@ if question:
         ]
 
         if len(valid_nodes) == 0:
-            print("\n===== 回答 =====")
-            print("関連性の高い情報が見つからなかったため、回答できませんでした。")
+            st.write("\n===== 回答 =====")
+            st.write("関連性の高い情報が見つからなかったため、回答できませんでした。")
 
         elif len(valid_nodes) < 2:
-            print("\n===== 回答 =====")
-            print("十分な根拠となる情報が揃わなかったため、回答を控えました。")
+            st.write("\n===== 回答 =====")
+            st.write("十分な根拠となる情報が揃わなかったため、回答を控えました。")
 
         else:
-            print("\n===== 回答 =====")
-            print(response)
+            st.write("\n===== 回答 =====")
+            st.write(response.response)
 
         # ==============================
         # ⑩ 検索結果表示
         # ==============================
 
-        print("\n===== 参考情報（検索されたチャンク） =====")
+        st.write("\n===== 参考情報（検索されたチャンク） =====")
 
         for i, node in enumerate(response.source_nodes):
 
-            print(f"\n--- 参考 {i+1} ---")
+            st.write(f"\n--- 参考 {i+1} ---")
 
             # スコア
-            print("類似度スコア:", round(node.score, 3))
+            st.write("類似度スコア:", round(node.score, 3))
 
             # 出典
             source = node.node.metadata.get("file_name", "不明")
-            print("出典ファイル:", source)
+            st.write("出典ファイル:", source)
 
-            # 改行だけ消す（これが重要）
+            # 改行だけ消す
             text = node.node.text.replace("\n", " ")
 
-            print("関連文章:")
-            print(text[:200]) 
+            st.write("関連文章:")
+            st.write(text[:200]) 

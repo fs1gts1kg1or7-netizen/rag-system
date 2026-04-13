@@ -84,7 +84,7 @@ print(question)
 
 
 # ==============================
-# ⑨ 「答えられない」判定（重要）
+# ⑨ 「答えられない」判定
 # ==============================
 
 # スコアが低い場合は回答しない
@@ -124,7 +124,7 @@ for i, node in enumerate(response.source_nodes):
     source = node.node.metadata.get("file_name", "不明")
     print("出典ファイル:", source)
 
-    # 改行だけ消す（これが重要）
+    # 改行だけ消す
     text = node.node.text.replace("\n", " ")
 
     print("関連文章:")
