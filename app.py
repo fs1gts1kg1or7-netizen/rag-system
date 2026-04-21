@@ -13,13 +13,13 @@ from llama_index.embeddings.openai import OpenAIEmbedding
 load_dotenv()
 
 # タイトル
-st.title("🧠 健康RAGアプリ（運動・食事・睡眠）")
+st.title("🧠 健康RAGアプリ(運動&食事&睡眠)")
 
 # 説明
 st.write("質問を入力すると、健康に関する情報をもとに回答します。")
 
 # 質問入力
-question = st.text_input("質問を入力してください")
+question = st.text_input("質問を入力しEnterを押してください🔍")
 
 if question:
         # ==============================
@@ -81,6 +81,8 @@ if question:
         # ==============================
 
         response = query_engine.query(question)
+        
+        st.divider()  # 区切り線
 
         # ==============================
         # ⑦ 回答表示
@@ -99,36 +101,36 @@ if question:
         ]
 
         if len(valid_nodes) == 0:
-            st.write("\n===== 回答 =====")
-            st.write("関連性の高い情報が見つからなかったため、回答できませんでした。")
+            st.subheader("\n===== 🎓回答🎓 =====")
+            st.error("関連性の高い情報が見つからなかったため、回答できませんでした。")
 
         elif len(valid_nodes) < 2:
-            st.write("\n===== 回答 =====")
-            st.write("十分な根拠となる情報が揃わなかったため、回答を控えました。")
+            st.subheader("\n===== 🎓回答🎓 =====")
+            st.warning("十分な根拠となる情報が揃わなかったため、回答を控えました。")
 
         else:
-            st.write("\n===== 回答 =====")
-            st.write(response.response)
+            st.subheader("\n===== 🎓回答🎓 =====")
+            st.success(response.response)
 
         # ==============================
         # ⑩ 検索結果表示
         # ==============================
 
-        st.write("\n===== 参考情報（検索されたチャンク） =====")
+        st.subheader("\n===== 💡参考情報💡（検索されたチャンク） =====")
 
         for i, node in enumerate(response.source_nodes):
+            
+            with st.expander(f"\n--- 参考 {i+1} ---"):
 
-            st.write(f"\n--- 参考 {i+1} ---")
+                # スコア
+                st.write("類似度スコア:", round(node.score, 3))
 
-            # スコア
-            st.write("類似度スコア:", round(node.score, 3))
+                # 出典
+                source = node.node.metadata.get("file_name", "不明")
+                st.write("出典ファイル:", source)
 
-            # 出典
-            source = node.node.metadata.get("file_name", "不明")
-            st.write("出典ファイル:", source)
+                # 改行だけ消す
+                text = node.node.text.replace("\n", " ")
 
-            # 改行だけ消す
-            text = node.node.text.replace("\n", " ")
-
-            st.write("関連文章:")
-            st.write(text[:200]) 
+                st.write("関連文章:")
+                st.write(text[:200]) 
