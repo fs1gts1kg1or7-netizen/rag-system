@@ -5,7 +5,7 @@
 本プロジェクトは、運動・食事・睡眠に関する健康情報をもとに、質問に答えるRAG（検索＋生成）システムです。
 
 あらかじめ用意した記事の中から関連する内容を検索し、その情報をもとに回答を生成します。
-
+また、本システムはCUI（main.py）だけでなく、Streamlitを用いたWebアプリとしても利用できます。
 ---
 
 ## ■ 作成背景
@@ -19,12 +19,20 @@
 ---
 
 ## ■ デモ画面
-* 質問「糖尿病のリスクについて教えてください。」
+* CLI版　質問「糖尿病のリスクについて教えてください。」→正常に回答できた例
 ![デモ画像](images/rag-demo.png)
-* 質問「宇宙のなりたちについて」
+* CLI版　質問「宇宙のなりたちについて」→回答を抑制した例
 ![デモ画像](images/rag-demo-error.png)
+* Web版　質問「糖尿病のリスクについて教えてください。」→正常に回答できた例
+![デモ画像](images/rag-app.png)
+* Web版　質問「宇宙のなりたちについて」→回答を抑制した例
+![デモ画像](images/rag-app-error.png)
+
 
 ---
+
+## ■ デモ動画
+https://youtube.com/shorts/zvYdkgwx0Yw?feature=share
 
 ## ■ 主な機能
 
@@ -33,6 +41,14 @@
 * 検索結果をもとに回答を生成
 * 回答の元になった文章を表示
 * 関連性が低い場合は回答しない（誤回答防止）
+
+---
+
+## ■ 構成
+
+・main.py：CLIベースのRAGシステム
+・app.py：StreamlitによるWebアプリ版
+・data/：学習データ
 
 ---
 
@@ -73,23 +89,45 @@
 
 ---
 
+### ④ 処理の高速化（キャッシュ）
+
+Streamlitのキャッシュ機能（@st.cache_resource）を利用し、
+インデックス生成を1回に抑えることで処理速度を改善しました。
+
+---
+
 ## ■ データ
 
 厚生労働省のe-ヘルスネットなどの公開情報を参考にしたテキストデータ（約48記事）を使用しています。
 
 ---
 
+## ■ 環境変数
+
+OpenAI APIキーを.envファイルに設定してください。
+
+```bash
+OPENAI_API_KEY=your_api_key_here
+```
+
+---
+
 ## ■ 実行方法
 
 ```bash
-git clone <リポジトリURL>
+git clone https://github.com/fs1gts1kg1or7-netizen/rag-system.git
 cd rag-system
 
 python -m venv env
 env\Scripts\activate
 
 python -m pip install -r requirements.txt
+
+# CUI版
 python main.py
+
+# Webアプリ版
+streamlit run app.py
 ```
 
 ---
@@ -130,7 +168,6 @@ python main.py
 
 ## ■ 今後の改善予定
 
-* Streamlitで画面から操作できるようにする
 * PDFやWebサイトの読み込みに対応する
 * 検索精度の改善
 
